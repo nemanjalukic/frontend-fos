@@ -1,0 +1,75 @@
+<mat-toolbar fxLayout="row" color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" routerLink="/">
+        <mat-icon>home</mat-icon>
+      </button>
+    <span fxFlex>FOS</span>
+    <button  *ngIf='isLoggedIn' mat-button [fxShow]='true' [fxShow.xs]='false' [fxShow.sm]='false'> 
+        <mat-icon class="mr">account_circle</mat-icon>
+        {{name}} 
+    </button>
+    <button *ngIf="!currentUser || currentUser.role == 'ROLE_RESTAURANT'" mat-button [fxShow]='true' [fxShow.xs]='false' [fxShow.sm]='false' routerLink="/foodItems"> 
+        <mat-icon class="mr">fastfood</mat-icon>
+        Food items
+    </button>
+    <button *ngIf="!currentUser || currentUser.role == 'ROLE_CUSTOMER'" mat-button [fxShow]='true' [fxShow.xs]='false' [fxShow.sm]='false' routerLink="/cart"> 
+        <mat-icon class="mr">shopping_cart</mat-icon>
+        Cart
+    </button>
+    <button mat-button *ngFor="let item of menuItems" 
+        [fxShow]="item.showOnDesktop && item.showOnLoggedIn==isLoggedIn" 
+        [fxShow.xs]="item.showOnMobile && item.showOnLoggedIn==isLoggedIn"
+        [fxShow.sm]="item.showOnTablet && item.showOnLoggedIn==isLoggedIn" routerLink="{{item.link}}">
+        <mat-icon class="mr">{{item.icon}}</mat-icon>
+        {{item.label}}
+    </button>
+    <button  *ngIf='isLoggedIn' mat-button [fxShow]='true' [fxShow.xs]='false' [fxShow.sm]='false' (click)="logout()"> 
+        <mat-icon class="mr">logout</mat-icon>
+        Logout
+    </button>
+    <ng-container>
+        <button mat-icon-button [matMenuTriggerFor]="dropMenu" [fxShow]='false' [fxShow.sm]='true' [fxShow.xs]='true'>
+            <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #dropMenu="matMenu">
+            <div>
+                <button *ngIf='isLoggedIn'mat-menu-item [fxShow]='false' [fxShow.xs]='true' [fxShow.sm]='true'> 
+                    <mat-icon class="mr">account_circle</mat-icon>
+                    {{name}}
+                </button>
+                <mat-divider></mat-divider>
+            </div>
+            <div *ngIf="!currentUser || currentUser.role == 'ROLE_CUSTOMER'">
+                <button mat-menu-item [fxShow]='false' [fxShow.xs]='true' [fxShow.sm]='true' routerLink="/cart"> 
+                    <mat-icon class="mr">shopping_cart</mat-icon>
+                    Cart
+                </button>
+                <mat-divider></mat-divider>
+            </div>
+            <div *ngIf="!currentUser || currentUser.role == 'ROLE_RESTAURANT'">
+                <button mat-menu-item [fxShow]='false' [fxShow.xs]='true' [fxShow.sm]='true' routerLink="/foodItems"> 
+                    <mat-icon class="mr">fastfood</mat-icon>
+                    Food items
+                </button>
+                <mat-divider></mat-divider>
+            </div>
+            <ng-container *ngFor="let item of menuItems">
+                <div [fxShow]="!item.showOnDesktop && item.showOnLoggedIn==isLoggedIn" 
+                     [fxShow.sm]="!item.showOnTablet && item.showOnLoggedIn==isLoggedIn" 
+                     [fxShow.xs]="!item.showOnMobile && item.showOnLoggedIn==isLoggedIn">
+                    <button mat-menu-item [routerLink] ="item.link" >
+                        <mat-icon class="mr">{{item.icon}}</mat-icon>
+                        {{item.label}}
+                    </button>
+                    <mat-divider></mat-divider>
+                </div>
+            </ng-container>
+            <div>
+                <button *ngIf='isLoggedIn' mat-menu-item [fxShow]='false' [fxShow.xs]='true' [fxShow.sm]='true' (click)="logout()"> 
+                    <mat-icon class="mr">logout</mat-icon>
+                    Logout
+                </button>
+                <mat-divider></mat-divider>
+            </div>
+        </mat-menu>
+    </ng-container>
+</mat-toolbar>

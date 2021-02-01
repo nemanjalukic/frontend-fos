@@ -1,0 +1,40 @@
+<div class="main-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+  <mat-card class="box">
+    <mat-card-header>
+      <mat-card-title>Log In</mat-card-title>
+    </mat-card-header>
+
+    <form class="example-form" #form='ngForm' (ngSubmit)="onSubmit()">
+      <mat-card-content>
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Username" type="text"
+          name="username"
+          [(ngModel)]="model.username"
+          required
+          #username="ngModel">
+          <mat-error *ngIf="!(username.valid || username.pristine)">Username is required!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" name="password"
+          required [(ngModel)]="model.password" #password='ngModel'>
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            <mat-error *ngIf="!(password.valid || password.pristine)">
+              Email is required
+          </mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="isInvalid">
+          Invalid username and password. :{{ errorMessage }} </mat-error>
+      </mat-card-content>
+     
+      <button [disabled]="!form.form.valid" mat-raised-button color="primary" class="btn-block">Login</button>
+        
+      
+    </form>
+  </mat-card>
+
+</div>
+

@@ -1,0 +1,65 @@
+<div class="main-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>New food Item</mat-card-title>
+      </mat-card-header>
+  
+      <form #form="ngForm" class="example-form" (ngSubmit)="onSubmit()">
+
+        <mat-error *ngIf="isFailed">
+          {{ errorMessage }} 
+        </mat-error>
+        <mat-card-content>
+
+            <mat-form-field class="example-full-width">
+                <input matInput [(ngModel)]="item.name" type="text"  id="name" name="name" placeholder="Name"  required #name="ngModel">
+                <mat-error *ngIf="name.invalid && (name.dirty ||name.touched)">
+                  <mat-error *ngIf="name.errors.required">Name is required</mat-error>
+                  <mat-error *ngIf="name.errors.name">Invalid name</mat-error>
+               </mat-error>
+              </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="item.price" type="number"  id="price" name="price" placeholder="Price"  required #price="ngModel">
+            <mat-error *ngIf="price.invalid && (price.dirty ||price.touched)">
+              <mat-error *ngIf="price.errors.required">Price is required</mat-error>
+              <mat-error *ngIf="price.errors.price">Invalid price</mat-error>
+           </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="item.description" type="text"  id="description" name="description" placeholder="Description"  required #description="ngModel">
+            <mat-error *ngIf="description.invalid && (description.dirty ||description.touched)">
+              <mat-error *ngIf="description.errors.required">Description is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+
+          <img mat-card-image class="main-image" src="{{item?.picture}}">
+
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="item.picture" type="url"  id="picture" name="picture" placeholder="Picture url"  required #picture="ngModel" maxlength="255">
+            <mat-error *ngIf="picture.invalid && (picture.dirty ||picture.touched)">
+              <mat-error *ngIf="picture.errors.required">Picture is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+  
+
+          <mat-form-field class="example-full-width">
+            <mat-label>Choose role</mat-label>
+            <mat-select  [(ngModel)]="item.category"  required #category="ngModel" name="category" required >
+              <mat-option [value]=category *ngFor="let category of categories">{{category.category}}
+              </mat-option>
+            </mat-select>
+            
+          </mat-form-field>
+          <mat-error *ngIf="category.touched && category.invalid">
+            Role is required
+          </mat-error>
+  
+        </mat-card-content>
+  
+        <button mat-raised-button color="primary" class="btn-block" [disabled]="!form.form.valid">ADD</button>
+  
+      </form>
+    </mat-card>
+  </div>

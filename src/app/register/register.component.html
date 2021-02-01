@@ -1,0 +1,91 @@
+<div class="main-wrapper" fxLayout="row" fxLayoutAlign="center center">
+    <mat-card class="box">
+      <mat-card-header>
+        <mat-card-title>Register</mat-card-title>
+      </mat-card-header>
+  
+      <form #form="ngForm" class="example-form" (ngSubmit)="onSubmit()">
+
+        <mat-error *ngIf="isSignUpFailed">
+          {{ errorMessage }} 
+        </mat-error>
+        <mat-card-content>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Username" [(ngModel)]="user.username" name="username" type="text" minlength="6" required #username="ngModel">
+            <mat-error *ngIf="username.invalid && (username.dirty ||username.touched)">
+              <mat-error *ngIf="username.errors.required">Username is required</mat-error>
+              <mat-error *ngIf="username.errors.minlength">Username must be at least 6 characters long</mat-error>
+           </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput [(ngModel)]="user.email" type="email"  id="email" name="email" placeholder="Email" email required #email="ngModel">
+            <mat-error *ngIf="email.invalid && (email.dirty ||email.touched)">
+              <mat-error *ngIf="email.errors.required">Email is required</mat-error>
+              <mat-error *ngIf="email.errors.email">Invalid email</mat-error>
+           </mat-error>
+          </mat-form-field>
+  
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Password" [type]="hide ? 'password' : 'text'" name="password"
+            required [(ngModel)]="user.password" #password='ngModel' minlength="6">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+              <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="password.invalid && (password.dirty ||password.touched)">
+               <mat-error *ngIf="password.errors.required">Password is required</mat-error>
+               <mat-error *ngIf="password.errors.minlength">Password must be at least 6 characters long</mat-error>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Address" [(ngModel)]="user.address" name="address" type="text" required #address="ngModel">
+            <mat-error *ngIf="address.invalid && (address.dirty ||address.touched)">
+              <mat-error *ngIf="address.errors.required">Address is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Phone" [(ngModel)]="user.phone"  name="phone" type="text" required #phone="ngModel">
+            <mat-error *ngIf="phone.invalid && (phone.dirty ||phone.touched)">
+              <mat-error *ngIf="phone.errors.required">Phone is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <mat-label>Choose role</mat-label>
+            <mat-select  [(ngModel)]="user.role"  required #role="ngModel" name="role" required >
+              <mat-option [value]=role.id *ngFor="let role of roles">{{role.view}}
+              </mat-option>
+            </mat-select>
+            
+          </mat-form-field>
+          <mat-error *ngIf="role.touched && role.invalid">
+            Role is required
+          </mat-error>
+
+          <mat-form-field class="example-full-width" *ngIf="user.role===roles[1].id">
+            <input matInput placeholder="Resturant name" [(ngModel)]="user.restaurantName"  name="restaurantName" type="text" required #restaurantName="ngModel">
+            <mat-error *ngIf="restaurantName.invalid && (restaurantName.dirty ||restaurantName.touched)">
+              <mat-error *ngIf="restaurantName.errors.required">restaurantName is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" *ngIf="user.role===roles[0].id">
+            <input matInput placeholder="First name" [(ngModel)]="user.firstName"  name="firstName" type="text" required #firstName="ngModel">
+            <mat-error *ngIf="firstName.invalid && (firstName.dirty ||firstName.touched)">
+              <mat-error *ngIf="firstName.errors.required">First name is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="example-full-width" *ngIf="user.role===roles[0].id">
+            <input matInput placeholder="Last name" [(ngModel)]="user.lastName"  name="lastName" type="text" required #lastName="ngModel">
+            <mat-error *ngIf="lastName.invalid && (lastName.dirty ||lastName.touched)">
+              <mat-error *ngIf="lastName.errors.required">First name is required</mat-error>
+           </mat-error>
+          </mat-form-field>
+  
+        </mat-card-content>
+  
+        <button mat-raised-button color="primary" class="btn-block" [disabled]="!form.form.valid">Register</button>
+  
+      </form>
+    </mat-card>
+  </div>

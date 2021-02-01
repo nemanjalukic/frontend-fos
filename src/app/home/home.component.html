@@ -1,0 +1,13 @@
+<div class="content">
+  <div fxLayout="row wrap" fxLayoutGap="16px grid">
+    <div [fxFlex]="(100/gridColumns) + '%'" fxFlex.xs="100%" fxFlex.sm="33%" *ngFor="let item of page?.content">
+      <app-item [item]="item"></app-item>
+    </div>
+  </div>
+</div>
+
+<mat-paginator [length]="length"
+[pageSize]="pageSize"
+[pageSizeOptions]="pageSizeOptions"
+(page)="getServerData($event)" fxFlexAlign="end">
+</mat-paginator>

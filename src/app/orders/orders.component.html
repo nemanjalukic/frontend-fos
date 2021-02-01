@@ -1,0 +1,97 @@
+<mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
+  </mat-form-field>
+  <div class="mat-elevation-z8">
+  <table mat-table
+  [dataSource]="dataSource" multiTemplateDataRows matSort
+  class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.id}} </td>
+    </ng-container>
+    <ng-container matColumnDef="restaurant">
+        <th mat-header-cell *matHeaderCellDef> Restaurant </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.restaurant.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="customer">
+        <th mat-header-cell *matHeaderCellDef> Customer </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.customer.firstName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Final price </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.finalPrice}} </td>
+    </ng-container>
+    <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.orderTime | date:'short':'UTC'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.orderStatus.status}} </td>
+    </ng-container>
+    <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef> Action </th>
+        <td mat-cell *matCellDef="let transaction"> 
+    <div fxLayout="row" fxLayoutAlign="space-around center" class="actions" >  
+        <button mat-raised-button color="warn" *ngIf="transaction.orderStatus.status == 'NEW' || transaction.orderStatus.status == 'ACCEPTED'"  (click)="cancel(transaction)">Cancel</button>  
+        <button *ngIf="currentUser.role != 'ROLE_CUSTOMER' && transaction.orderStatus.status == 'ACCEPTED'" mat-raised-button color="primary" (click)="finish(transaction)">Finish</button>  
+        <button *ngIf="currentUser.role != 'ROLE_CUSTOMER' && transaction.orderStatus.status == 'NEW'" mat-raised-button color="primary" (click)="accept(transaction)">Accept</button> 
+    </div>
+    </td>
+    </ng-container>
+
+    <!-- Cost Column -->
+    <ng-container matColumnDef="cost">
+        <th mat-header-cell *matHeaderCellDef> Cost </th>
+        <td mat-cell *matCellDef="let transaction"> {{transaction.cost | currency}} </td>
+        <td mat-footer-cell *matFooterCellDef> {{getTotalCost() | currency}} </td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+    <td mat-cell *matCellDef="let element" [attr.colspan]="columnsToDisplay.length">
+    <div class="example-element-detail"
+        [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+        <table mat-table [dataSource]="element.orderItems" class="mat-elevation-z8">
+        <!-- Item Column -->
+        <ng-container matColumnDef="item">
+            <th mat-header-cell *matHeaderCellDef> Item </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.foodItem.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+            <th mat-header-cell *matHeaderCellDef> Price </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.foodItem.price | currency}} </td>
+        </ng-container>
+        <ng-container matColumnDef="quantity">
+            <th mat-header-cell *matHeaderCellDef> Quantity </th>
+            <td mat-cell *matCellDef="let transaction"><input matInput class="amount" type="number" (change)="onChange(transaction)" [(ngModel)]=transaction.quantity min="1"/></td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+            <th mat-header-cell *matHeaderCellDef> Category </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.foodItem.category.category}} </td>
+        </ng-container>   
+        <!-- Cost Column -->
+        <ng-container matColumnDef="cost">
+            <th mat-header-cell *matHeaderCellDef> Cost </th>
+            <td mat-cell *matCellDef="let transaction"> {{transaction.foodItem.price*transaction.quantity | currency}} </td>
+        </ng-container>
+
+        
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+    </td>
+    </ng-container>
+
+<tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+<tr mat-row *matRowDef="let element; columns: columnsToDisplay;"
+ class="example-element-row"
+ [class.example-expanded-row]="expandedElement === element"
+ (click)="expandedElement = expandedElement === element ? null : element">
+</tr>
+<tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+</table>
+<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>
