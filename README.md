@@ -10,9 +10,9 @@ testing1 - 123456 - restaurant
 
 testing2 - 123456 - customer   
 
-testing2 - 123456 - customer
+testing3 - 123456 - customer
 
-testing2 - 123456 - restaurant
+testing4 - 123456 - restaurant
 
 ## Development server
 
