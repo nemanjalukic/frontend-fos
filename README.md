@@ -6,10 +6,12 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 Admin part, Change user profile, edit food item
 
 # Accounts username -password - role
-
 testing1 - 123456 - restaurant
-testing2 - 123456 - customer    
+
+testing2 - 123456 - customer   
+
 testing2 - 123456 - customer
+
 testing2 - 123456 - restaurant
 
 ## Development server
