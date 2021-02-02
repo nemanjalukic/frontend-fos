@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
 # To do 
 
-Admin part, Change user profile, edit food item
+Admin part, Change user profile, edit food item, test application
 
 # Accounts username -password - role
 testing1 - 123456 - restaurant
